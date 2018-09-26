@@ -51,6 +51,19 @@ export default class mainPage extends Component {
     );
   };
 
+  scrollTo = goToSection => {
+    this.state.sections.find((section, index) => {
+      if (goToSection === section.type.name) {
+        window.scrollTo({
+          top: index * this.state.sectionHeight,
+          behavior: "smooth"
+        });
+        return true;
+      }
+      return false;
+    });
+  };
+
   getSectionName = section => section.type.name;
 
   render() {
@@ -60,6 +73,7 @@ export default class mainPage extends Component {
         <NavBar
           sections={this.state.sections.map(this.getSectionName)}
           selectedSection={this.state.selectedSection}
+          scrollTo={this.scrollTo}
         />
       </div>
     );

@@ -13,7 +13,8 @@ const styles = {
   },
   li: {
     listStyleType: "none",
-    display: "flex"
+    display: "flex",
+    cursor: "pointer"
   },
   navButton: {
     height: 12,
@@ -29,7 +30,11 @@ export default class NavBar extends Component {
 
   renderSection = (section, index) => {
     return (
-      <li style={styles.li} key={index}>
+      <li
+        style={styles.li}
+        key={index}
+        onClick={() => this.props.scrollTo(section)}
+      >
         <div
           style={{
             ...styles.navButton,
