@@ -9,22 +9,58 @@ const styles = {
 };
 
 export default class mainPage extends Component {
+  sectionRef = React.createRef();
+
   constructor() {
     super();
+    const sections = [<Welcome />, <Introduction />];
     this.state = {
-      sections: [<Welcome />, <Introduction />]
+      sections,
+      selectedSection: sections[0].type.name,
+      sectionHeight: 0
     };
   }
 
-  renderSection = (section, index) => {
-    return <Section key={index}>{section}</Section>;
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+
+  handleScroll = event => {
+    const selectedSection = this.state.sections.reduce(
+      (selectedSection, section, index) => {
+        if (
+          window.scrollY >= index * this.state.sectionHeight &&
+          window.scrollY <= (index + 1) * this.state.sectionHeight
+        )
+          return section.type.name;
+        return selectedSection;
+      },
+      ""
+    );
+    this.setState({ selectedSection });
   };
+
+  renderSection = (section, index) => {
+    return (
+      <Section
+        key={index}
+        setSectionHeight={sectionHeight => this.setState({ sectionHeight })}
+      >
+        {section}
+      </Section>
+    );
+  };
+
+  getSectionName = section => section.type.name;
 
   render() {
     return (
       <div style={styles.container}>
         {this.state.sections.map(this.renderSection)}
-        <NavBar />
+        <NavBar
+          sections={this.state.sections.map(this.getSectionName)}
+          selectedSection={this.state.selectedSection}
+        />
       </div>
     );
   }
