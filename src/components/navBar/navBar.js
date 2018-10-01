@@ -17,7 +17,7 @@ const styles = {
     cursor: "pointer",
     alignItems: "center"
   },
-  outerButton: {
+  bulletContainer: {
     height: 20,
     width: 20,
     marginTop: -1,
@@ -25,7 +25,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center"
   },
-  navButton: {
+  bullet: {
     position: "absolute",
     height: 12,
     width: 12,
@@ -34,19 +34,19 @@ const styles = {
     borderRadius: 50,
     transition: "all 1s"
   },
-  selectedButton: {
-    height: 10,
-    width: 10,
+  selectedBullet: {
+    height: 9,
+    width: 9,
     backgroundColor: "red"
   },
-  buttonBorder: {
+  bulletBorder: {
     border: "2px solid green",
     height: 10,
     width: 10,
     borderRadius: 50,
     transition: "all 1s"
   },
-  selectedButtonBorder: {
+  selectedBulletBorder: {
     height: 14,
     width: 14,
     border: "2px solid red"
@@ -56,6 +56,27 @@ const styles = {
 export default class NavBar extends Component {
   propTypes: { sections: PropTypes.array.isRequired };
 
+  renderBullet = section => (
+    <div style={styles.bulletContainer}>
+      <div
+        style={{
+          ...styles.bulletBorder,
+          ...(this.props.selectedSection === section
+            ? styles.selectedBulletBorder
+            : {})
+        }}
+      />
+      <div
+        style={{
+          ...styles.bullet,
+          ...(this.props.selectedSection === section
+            ? styles.selectedBullet
+            : {})
+        }}
+      />
+    </div>
+  );
+
   renderSection = (section, index) => {
     return (
       <li
@@ -63,24 +84,7 @@ export default class NavBar extends Component {
         key={index}
         onClick={() => this.props.scrollTo(section)}
       >
-        <div style={styles.outerButton}>
-          <div
-            style={{
-              ...styles.buttonBorder,
-              ...(this.props.selectedSection === section
-                ? styles.selectedButtonBorder
-                : {})
-            }}
-          />
-          <div
-            style={{
-              ...styles.navButton,
-              ...(this.props.selectedSection === section
-                ? styles.selectedButton
-                : {})
-            }}
-          />
-        </div>
+        {this.renderBullet(section)}
         <span value={section}>{section}</span>
       </li>
     );
