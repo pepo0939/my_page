@@ -14,14 +14,42 @@ const styles = {
   li: {
     listStyleType: "none",
     display: "flex",
-    cursor: "pointer"
+    cursor: "pointer",
+    alignItems: "center"
+  },
+  outerButton: {
+    height: 20,
+    width: 20,
+    marginTop: -1,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   navButton: {
+    position: "absolute",
     height: 12,
     width: 12,
-    marginTop: 2,
+    margin: "auto",
     backgroundColor: "green",
-    borderRadius: 22
+    borderRadius: 50,
+    transition: "all 1s"
+  },
+  selectedButton: {
+    height: 10,
+    width: 10,
+    backgroundColor: "red"
+  },
+  buttonBorder: {
+    border: "2px solid green",
+    height: 10,
+    width: 10,
+    borderRadius: 50,
+    transition: "all 1s"
+  },
+  selectedButtonBorder: {
+    height: 14,
+    width: 14,
+    border: "2px solid red"
   }
 };
 
@@ -35,17 +63,24 @@ export default class NavBar extends Component {
         key={index}
         onClick={() => this.props.scrollTo(section)}
       >
-        <div
-          style={{
-            ...styles.navButton,
-            ...{
-              backgroundColor:
-                this.props.selectedSection === section
-                  ? "red"
-                  : styles.navButton.backgroundColor
-            }
-          }}
-        />
+        <div style={styles.outerButton}>
+          <div
+            style={{
+              ...styles.buttonBorder,
+              ...(this.props.selectedSection === section
+                ? styles.selectedButtonBorder
+                : {})
+            }}
+          />
+          <div
+            style={{
+              ...styles.navButton,
+              ...(this.props.selectedSection === section
+                ? styles.selectedButton
+                : {})
+            }}
+          />
+        </div>
         <span value={section}>{section}</span>
       </li>
     );

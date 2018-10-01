@@ -26,6 +26,7 @@ export default class mainPage extends Component {
   }
 
   handleScroll = event => {
+    //TODO: check how to change selectedSection depending on how mach of the section is visible on the screen
     const selectedSection = this.state.sections.reduce(
       (selectedSection, section, index) => {
         if (
