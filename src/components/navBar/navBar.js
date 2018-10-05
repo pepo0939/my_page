@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 const styles = {
   navBar: {
     position: "fixed",
-    backgroundColor: "lightgray",
     margin: 0,
     top: "50%",
     left: "4%",
@@ -15,12 +14,13 @@ const styles = {
     listStyleType: "none",
     display: "flex",
     cursor: "pointer",
-    alignItems: "center"
+    alignItems: "center",
+    paddingBottom: 8
   },
   bulletContainer: {
     height: 20,
     width: 20,
-    marginTop: -1,
+    marginTop: -4,
     display: "flex",
     justifyContent: "center",
     alignItems: "center"

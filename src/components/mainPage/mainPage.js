@@ -3,6 +3,7 @@ import NavBar from "../navBar/navBar";
 import Section from "../section/section";
 import Introduction from "../introduction/introduction";
 import Welcome from "../welcome/welcome";
+import ThreeExample from "../theeExample/threeExaple";
 
 const styles = {
   container: {}
@@ -13,7 +14,7 @@ export default class mainPage extends Component {
 
   constructor() {
     super();
-    const sections = [<Welcome />, <Introduction />];
+    const sections = [<Welcome />, <Introduction />, <ThreeExample />];
     this.state = {
       sections,
       selectedSection: sections[0].type.name,
@@ -53,6 +54,7 @@ export default class mainPage extends Component {
   };
 
   scrollTo = goToSection => {
+    //this.setState({ selectedSection: goToSection });
     this.state.sections.find((section, index) => {
       if (goToSection === section.type.name) {
         window.scrollTo({

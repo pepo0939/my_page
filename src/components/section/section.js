@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 const style = {
   container: {
-    background: "lightblue",
     width: "100vw",
-    height: "100vh"
+    height: "100vh",
+    borderBottom: "2px solid black"
   }
 };
 
