@@ -1,45 +1,133 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 const styles = {
   container: {},
   paragraph: {},
   sentence: {},
-  word: {},
-  character: {}
+  word: { display: "inline" },
+  character: { display: "inline" }
 };
 
-const Character = props => (
-  <React.Fragment>
-    {props.children.map(word => {
-      return word
-        .text()
-        .split("")
-        .map(char => <div>{char}</div>);
-    })}{" "}
-  </React.Fragment>
+const StyleContext = React.createContext({});
+const RefContext = React.createContext({
+  sentenceRefs: () => {},
+  wordRefs: () => {},
+  charRefs: () => {}
+});
+
+const Character = ({ children, id }) => (
+  <RefContext.Consumer>
+    {({ charRefs }) => (
+      <StyleContext.Consumer>
+        {({ character: charStyle }) => (
+          <Fragment>
+            {React.Children.map(children, word =>
+              word.split("").map((char, index) => (
+                <div
+                  ref={charRefs}
+                  style={{ ...styles.character, ...charStyle }}
+                  key={`${id}c${index}`}
+                >
+                  {char}
+                </div>
+              ))
+            )}{" "}
+          </Fragment>
+        )}
+      </StyleContext.Consumer>
+    )}
+  </RefContext.Consumer>
 );
 
-const Word = props => (
-  <React.Fragment>
-    {this.props.children.map(elem => (
-      <div>
-        {props.children.split(" ").map(word => <Character>word</Character>)}
-      </div>
-    ))}
-  </React.Fragment>
+const Word = ({ children, id }) => (
+  <RefContext.Consumer>
+    {({ wordRefs }) => (
+      <StyleContext.Consumer>
+        {({ word: wordsStyle }) => (
+          <Fragment>
+            {React.Children.map(children, elem => (
+              <div ref={wordRefs} style={{ ...styles.word, ...wordsStyle }}>
+                {elem.split(" ").map((word, index) => (
+                  <Character key={`${id}w${index}`} id={`${id}w${index}`}>
+                    {word}
+                  </Character>
+                ))}
+              </div>
+            ))}
+          </Fragment>
+        )}
+      </StyleContext.Consumer>
+    )}
+  </RefContext.Consumer>
+);
+
+const Sentence = ({ children, id }) => (
+  <RefContext.Consumer>
+    {({ sentenceRefs }) => (
+      <StyleContext.Consumer>
+        {({ sentence: sentStyle }) => (
+          <Fragment>
+            {React.Children.map(children, elem => (
+              <div
+                ref={sentenceRefs}
+                style={{ ...styles.sentence, ...sentStyle }}
+              >
+                {elem.props.children.split(" ").map((word, index) => (
+                  <Word key={`${id}s${index}`} id={`${id}s${index}`}>
+                    {word}
+                  </Word>
+                ))}
+              </div>
+            ))}
+          </Fragment>
+        )}
+      </StyleContext.Consumer>
+    )}
+  </RefContext.Consumer>
 );
 
 export default class Splitter extends Component {
+  constructor(props) {
+    super(props);
+
+    this.sentences = [];
+    this.words = [];
+    this.characters = [];
+  }
+
+  sentenceRefs = sRef => this.sentences.push(sRef);
+  wordRefs = wRef => this.words.push(wRef);
+  charRefs = cRef => this.characters.push(cRef);
+
+  componentDidMount() {
+    const {
+      getSentences = () => {},
+      getWords = () => {},
+      getCharacters = () => {}
+    } = this.props;
+    getSentences(this.sentences);
+    getWords(this.words);
+    getCharacters(this.characters);
+  }
+
   render() {
     return (
       <div style={styles.container}>
-        {this.props.children.map(elem => {
-          return elem.html(
-            elem
-              .text()
-              .replace(/([^\x00-\x80]|\w)/g, "<div class='letter'>$&</div>")
-          );
-        })}
+        <RefContext.Provider
+          value={{
+            sentenceRefs: this.sentenceRefs,
+            wordRefs: this.wordRefs,
+            charRefs: this.charRefs
+          }}
+        >
+          <StyleContext.Provider value={this.props.styles}>
+            {this.props.children.map((elem, index) => (
+              <Sentence key={index} id={index}>
+                {elem}
+              </Sentence>
+            ))}
+          </StyleContext.Provider>
+        </RefContext.Provider>
       </div>
     );
   }
