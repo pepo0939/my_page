@@ -42,7 +42,11 @@ export default class Welcome extends Component {
   render() {
     return (
       <div style={styles.container}>
-        <Splitter getWords={this.setWords} styles={splitterStyles}>
+        <Splitter
+          getWords={this.setWords}
+          styles={splitterStyles}
+          splitIn={"words"}
+        >
           <p>Hello</p>
           <p>
             I'm a Web Developer... And this page is an exaple of what I can do
