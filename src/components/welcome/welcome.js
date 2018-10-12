@@ -45,7 +45,7 @@ export default class Welcome extends Component {
         <Splitter
           getWords={this.setWords}
           styles={splitterStyles}
-          splitIn={"words"}
+          splitIn={["words"]}
         >
           <p>Hello</p>
           <p>

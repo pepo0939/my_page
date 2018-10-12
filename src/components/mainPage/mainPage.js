@@ -14,7 +14,7 @@ export default class mainPage extends Component {
 
   constructor() {
     super();
-    const sections = [<Welcome />, <Introduction />, <ThreeExample />];
+    const sections = [<Welcome />];
     this.state = {
       sections,
       selectedSection: sections[0].type.name,
