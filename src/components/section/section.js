@@ -11,13 +11,14 @@ const style = {
 export default class Section extends Component {
   sectionRef = React.createRef();
 
-  componentDidMount() {
+  componentDidMount = () => {
     const setHeight = () => {
-      this.props.setSectionHeight(this.sectionRef.clientHeight);
+      if (this.sectionRef && this.sectionRef.clientHeight)
+        this.props.setSectionHeight(this.sectionRef.clientHeight);
     };
     window.addEventListener("resize", setHeight);
     setHeight();
-  }
+  };
 
   render() {
     return (

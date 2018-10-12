@@ -9,7 +9,6 @@ const divitionsType = {
 let count = 0;
 
 const styles = {
-  container: {},
   paragraph: {},
   sentence: {},
   word: { display: "inline" },
@@ -108,7 +107,7 @@ const renderedDivition = (splitIn, children, id) => {
     return renderWords(
       splitIn,
       arrayStringChildren.reduce(
-        (text, child) => (text === "" ? child : `${child} ${text}`),
+        (acc, text) => (acc === "" ? text : `${acc} ${text}`),
         ""
       ),
       id
@@ -118,7 +117,7 @@ const renderedDivition = (splitIn, children, id) => {
     return renderCharacters(
       splitIn,
       arrayStringChildren.reduce(
-        (text, child) => (text === "" ? child : `${child} ${text}`),
+        (acc, text) => (acc === "" ? text : `${acc} ${text}`),
         ""
       ),
       id
@@ -163,19 +162,17 @@ export default class Splitter extends Component {
     if (!children) return null;
 
     return (
-      <div style={styles.container}>
-        <RefContext.Provider
-          value={{
-            sentenceRefs: this.sentenceRefs,
-            wordRefs: this.wordRefs,
-            charRefs: this.charRefs
-          }}
-        >
-          <StyleContext.Provider value={customeStyles}>
-            {renderedDivition(splitIn, children)}
-          </StyleContext.Provider>
-        </RefContext.Provider>
-      </div>
+      <RefContext.Provider
+        value={{
+          sentenceRefs: this.sentenceRefs,
+          wordRefs: this.wordRefs,
+          charRefs: this.charRefs
+        }}
+      >
+        <StyleContext.Provider value={customeStyles}>
+          {renderedDivition(splitIn, children)}
+        </StyleContext.Provider>
+      </RefContext.Provider>
     );
   }
 }
