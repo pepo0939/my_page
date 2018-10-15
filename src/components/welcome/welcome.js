@@ -13,9 +13,14 @@ const styles = {
 };
 
 const splitterStyles = {
-  word: {
-    position: "absolute",
+  sentence: {
     margin: "auto",
+    position: "absolute",
+    fontSize: "6vh",
+    textAlign: "center",
+    padding: "22vw"
+  },
+  word: {
     fontSize: "6vh"
   }
 };
@@ -24,19 +29,54 @@ export default class Welcome extends Component {
   constructor(props) {
     super(props);
     this.words = [];
-    this.tl = new TimelineMax({ repeat: -1, repeatDelay: 1 });
+    this.sentences = [];
+    this.characters = [];
+    this.timeline = new TimelineMax({ repeat: -1, repeatDelay: 1 });
   }
 
   setWords = words => (this.words = words);
+  setSentences = sentences => (this.sentences = sentences);
+  setCharacters = characters => (this.characters = characters);
 
   componentDidMount() {
-    this.words.forEach(word => {
-      this.tl.from(word, 1, {
+    this.timeline
+      .from(this.sentences[0], 1, {
         opacity: 0
-      }).to(word, 1, {
+      })
+      .to(this.sentences[0], 1, {
         opacity: 0
       });
-    });
+
+    this.timeline
+      .from(this.sentences[1], 1, {
+        opacity: 0,
+        y: 100
+      })
+      .to(this.sentences[1], 1, {
+        opacity: 0,
+        x: -100
+      });
+
+    this.timeline.staggerFrom(
+      this.words.filter(w => w.id.includes("s2")),
+      1,
+      {
+        opacity: 0,
+        rotationX: -90,
+        transformOrigin: "50% top"
+      },
+      0.2
+    );
+
+    this.timeline.staggerTo(
+      this.characters.filter(c => c.id.includes("s2")),
+      0.5,
+      {
+        opacity: 0,
+        y: -20
+      },
+      0.1
+    );
   }
 
   render() {
@@ -44,13 +84,14 @@ export default class Welcome extends Component {
       <div style={styles.container}>
         <Splitter
           getWords={this.setWords}
+          getSentences={this.setSentences}
+          getCharacters={this.setCharacters}
           styles={splitterStyles}
-          splitIn={["words"]}
+          splitIn={["sentences", "words", "characters"]}
         >
           <p>Hello</p>
-          <p>
-            I'm a Web Developer... And this page is an exaple of what I can do
-          </p>
+          <p>I'm a Web Developer... </p>
+          <p>And this page is an exaple of what I can do</p>
         </Splitter>
       </div>
     );

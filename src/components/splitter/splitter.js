@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 const divitionsType = {
   SENTENCES: "SENTENCES",
@@ -11,8 +11,14 @@ let count = 0;
 const styles = {
   paragraph: {},
   sentence: {},
-  word: { display: "inline" },
-  character: { display: "inline" }
+  word: {
+    position: "relative",
+    display: "inline-block"
+  },
+  character: {
+    position: "relative",
+    display: "inline-block"
+  }
 };
 
 const StyleContext = React.createContext();
@@ -27,7 +33,7 @@ const Character = ({ children: char, id }) => (
     {({ charRefs }) => (
       <StyleContext.Consumer>
         {({ character: charStyle }) => (
-          <div ref={charRefs} style={charStyle}>
+          <div ref={charRefs} style={charStyle} id={id}>
             {char}
           </div>
         )}
@@ -47,13 +53,15 @@ const Word = ({ children: word, id, splitIn }) => (
     {({ wordRefs }) => (
       <StyleContext.Consumer>
         {({ word: wordsStyle = {} }) => (
-          <div ref={wordRefs} style={wordsStyle}>
-            {renderedDivition(
-              splitIn.filter(div => div !== divitionsType.WORDS),
-              word,
-              `w${id}`
-            )}{" "}
-          </div>
+          <Fragment>
+            <div ref={wordRefs} style={wordsStyle} id={id}>
+              {renderedDivition(
+                splitIn.filter(div => div !== divitionsType.WORDS),
+                word,
+                id
+              )}
+            </div>{" "}
+          </Fragment>
         )}
       </StyleContext.Consumer>
     )}
@@ -75,11 +83,11 @@ const Sentence = ({ children: sentence, id, splitIn }) => (
     {({ sentenceRefs }) => (
       <StyleContext.Consumer>
         {({ sentence: sentStyle }) => (
-          <div ref={sentenceRefs} style={sentStyle}>
+          <div ref={sentenceRefs} style={sentStyle} id={id}>
             {renderedDivition(
               splitIn.filter(div => div !== divitionsType.SENTENCES),
               sentence,
-              `s${id}`
+              id
             )}
           </div>
         )}
@@ -90,7 +98,7 @@ const Sentence = ({ children: sentence, id, splitIn }) => (
 
 const renderSentences = (splitIn, sentences) =>
   sentences.map((sentence, index) => (
-    <Sentence key={index} id={index} splitIn={splitIn}>
+    <Sentence key={index} id={`s${index}`} splitIn={splitIn}>
       {sentence}
     </Sentence>
   ));
@@ -156,7 +164,13 @@ export default class Splitter extends Component {
       splitIn = [divitionsType.SENTENCE],
       children
     } = this.props;
-    customeStyles = { ...styles, ...customeStyles };
+    customeStyles = Object.keys(styles).reduce(
+      (obj, key) => ({
+        ...obj,
+        [key]: { ...styles[key], ...customeStyles[key] }
+      }),
+      {}
+    );
     splitIn = splitIn.map(div => div.toUpperCase());
 
     if (!children) return null;
