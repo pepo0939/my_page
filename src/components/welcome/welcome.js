@@ -14,14 +14,10 @@ const styles = {
 
 const splitterStyles = {
   sentence: {
-    margin: "auto",
     position: "absolute",
     fontSize: "6vh",
     textAlign: "center",
     padding: "22vw"
-  },
-  word: {
-    fontSize: "6vh"
   }
 };
 
@@ -89,9 +85,8 @@ export default class Welcome extends Component {
           styles={splitterStyles}
           splitIn={["sentences", "words", "characters"]}
         >
-          <p>Hello</p>
-          <p>I'm a Web Developer... </p>
-          <p>And this page is an exaple of what I can do</p>
+          Hello. I'm a Web Developer... And this page is an example of what I
+          can do
         </Splitter>
       </div>
     );

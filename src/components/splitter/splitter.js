@@ -1,16 +1,23 @@
 import React, { Component, Fragment } from "react";
 
+/*
+TODO:
+  * parametere to render children without divitions
+  * add more divitions
+*/
+
 const divitionsType = {
   SENTENCES: "SENTENCES",
   WORDS: "WORDS",
   CHARACTERS: "CHARACTERS"
 };
 
-let count = 0;
-
 const styles = {
   paragraph: {},
-  sentence: {},
+  sentence: {
+    position: "relative",
+    display: "inline-block"
+  },
   word: {
     position: "relative",
     display: "inline-block"
@@ -83,13 +90,15 @@ const Sentence = ({ children: sentence, id, splitIn }) => (
     {({ sentenceRefs }) => (
       <StyleContext.Consumer>
         {({ sentence: sentStyle }) => (
-          <div ref={sentenceRefs} style={sentStyle} id={id}>
-            {renderedDivition(
-              splitIn.filter(div => div !== divitionsType.SENTENCES),
-              sentence,
-              id
-            )}
-          </div>
+          <Fragment>
+            <div ref={sentenceRefs} style={sentStyle} id={id}>
+              {renderedDivition(
+                splitIn.filter(div => div !== divitionsType.SENTENCES),
+                sentence,
+                id
+              )}
+            </div>{" "}
+          </Fragment>
         )}
       </StyleContext.Consumer>
     )}
@@ -97,39 +106,38 @@ const Sentence = ({ children: sentence, id, splitIn }) => (
 );
 
 const renderSentences = (splitIn, sentences) =>
+  sentences.split(". ").map((sentence, index) => (
+    <Sentence key={index} id={`s${index}`} splitIn={splitIn}>
+      {`${sentence}.`}
+    </Sentence>
+  ));
+
+/*const renderSentences = (splitIn, sentences) =>
   sentences.map((sentence, index) => (
     <Sentence key={index} id={`s${index}`} splitIn={splitIn}>
       {sentence}
     </Sentence>
   ));
+  */
 
 const renderedDivition = (splitIn, children, id) => {
   const arrayStringChildren = React.Children.map(children, child => {
     return !child.type ? child : child.props.children;
   });
 
+  const textChildren = arrayStringChildren.reduce(
+    (acc, text) => (acc === "" ? text : `${acc} ${text}`),
+    ""
+  );
+
   if (splitIn.some(divition => divition === divitionsType.SENTENCES))
-    return renderSentences(splitIn, arrayStringChildren);
+    return renderSentences(splitIn, textChildren);
 
   if (splitIn.some(divition => divition === divitionsType.WORDS))
-    return renderWords(
-      splitIn,
-      arrayStringChildren.reduce(
-        (acc, text) => (acc === "" ? text : `${acc} ${text}`),
-        ""
-      ),
-      id
-    );
+    return renderWords(splitIn, textChildren, id);
 
   if (splitIn.some(divition => divition === divitionsType.CHARACTERS))
-    return renderCharacters(
-      splitIn,
-      arrayStringChildren.reduce(
-        (acc, text) => (acc === "" ? text : `${acc} ${text}`),
-        ""
-      ),
-      id
-    );
+    return renderCharacters(splitIn, textChildren, id);
 
   return children;
 };
