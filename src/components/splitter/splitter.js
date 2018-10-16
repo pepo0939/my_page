@@ -13,6 +13,7 @@ const divitionsType = {
 };
 
 const styles = {
+  container: {},
   paragraph: {},
   sentence: {
     position: "relative",
@@ -182,6 +183,9 @@ export default class Splitter extends Component {
     splitIn = splitIn.map(div => div.toUpperCase());
 
     if (!children) return null;
+
+    if (this.props.rejoin)
+      return <div style={customeStyles.container}>{this.props.children}</div>;
 
     return (
       <RefContext.Provider

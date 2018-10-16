@@ -8,14 +8,19 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-    flexDirection: "column"
+    flexDirection: "column",
+    fontSize: "6vh"
   }
 };
 
 const splitterStyles = {
   sentence: {
     position: "absolute",
-    fontSize: "6vh",
+    textAlign: "center",
+    padding: "22vw"
+  },
+  container: {
+    position: "absolute",
     textAlign: "center",
     padding: "22vw"
   }
@@ -28,6 +33,9 @@ export default class Welcome extends Component {
     this.sentences = [];
     this.characters = [];
     this.timeline = new TimelineMax({ repeat: -1, repeatDelay: 1 });
+    this.state = {
+      rejoin: false
+    };
   }
 
   setWords = words => (this.words = words);
@@ -77,13 +85,19 @@ export default class Welcome extends Component {
 
   render() {
     return (
-      <div style={styles.container}>
+      <div
+        style={styles.container}
+        onClick={() => {
+          this.setState({ rejoin: true });
+        }}
+      >
         <Splitter
           getWords={this.setWords}
           getSentences={this.setSentences}
           getCharacters={this.setCharacters}
           styles={splitterStyles}
           splitIn={["sentences", "words", "characters"]}
+          rejoin={this.state.rejoin}
         >
           Hello. I'm a Web Developer... And this page is an example of what I
           can do
