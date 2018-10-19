@@ -15,6 +15,7 @@ const styles = {
     display: "flex",
     cursor: "pointer",
     alignItems: "center",
+    alignContent: "center",
     paddingBottom: 8
   },
   bulletContainer: {
@@ -29,7 +30,6 @@ const styles = {
     position: "absolute",
     height: 12,
     width: 12,
-    margin: "auto",
     backgroundColor: "green",
     borderRadius: 50,
     transition: "all 1s"
@@ -40,11 +40,16 @@ const styles = {
     backgroundColor: "red"
   },
   bulletBorder: {
+    margin: "2px 4px 4px 4px",
     border: "2px solid green",
     height: 10,
     width: 10,
     borderRadius: 50,
-    transition: "all 1s"
+    transition: "all 1s",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    transform: "translate(-50%, 0)"
   },
   selectedBulletBorder: {
     height: 14,
@@ -57,15 +62,14 @@ export default class NavBar extends Component {
   propTypes: { sections: PropTypes.array.isRequired };
 
   renderBullet = section => (
-    <div style={styles.bulletContainer}>
-      <div
-        style={{
-          ...styles.bulletBorder,
-          ...(this.props.selectedSection === section
-            ? styles.selectedBulletBorder
-            : {})
-        }}
-      />
+    <div
+      style={{
+        ...styles.bulletBorder,
+        ...(this.props.selectedSection === section
+          ? styles.selectedBulletBorder
+          : {})
+      }}
+    >
       <div
         style={{
           ...styles.bullet,

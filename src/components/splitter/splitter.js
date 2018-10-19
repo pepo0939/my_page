@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 
 /*
 TODO:
-  * parametere to render children without divitions
-  * add more divitions
+  * add more divitions(line, paragraph?)
+  * expose a render item so it can ve 
 */
 
 const divitionsType = {
@@ -152,20 +152,43 @@ export default class Splitter extends Component {
     this.characters = [];
   }
 
-  sentenceRefs = sRef => this.sentences.push(sRef);
-  wordRefs = wRef => this.words.push(wRef);
-  charRefs = cRef => this.characters.push(cRef);
+  sentenceRefs = sRef => sRef && this.sentences.push(sRef);
+  wordRefs = wRef => wRef && this.words.push(wRef);
+  charRefs = cRef => cRef && this.characters.push(cRef);
 
   componentDidMount() {
+    this.updateRefs();
+  }
+
+  componentDidUpdate = prevProps => {
+    if (this.props.rejoin) {
+      this.sentences = [];
+      this.words = [];
+      this.characters = [];
+    }
+    if (prevProps.rejoin !== this.props.rejoin) this.updateRefs();
+  };
+
+  updateRefs = () => {
     const {
       getSentences = () => {},
       getWords = () => {},
-      getCharacters = () => {}
+      getCharacters = () => {},
+      getDivisionRefs = () => {},
+      rejoin = false
     } = this.props;
-    getSentences(this.sentences);
-    getWords(this.words);
-    getCharacters(this.characters);
-  }
+    const sentences = rejoin ? [] : this.sentences;
+    const words = rejoin ? [] : this.words;
+    const characters = rejoin ? [] : this.characters;
+    getSentences(sentences);
+    getWords(words);
+    getCharacters(characters);
+    getDivisionRefs({
+      sentences,
+      words,
+      characters
+    });
+  };
 
   render() {
     let {
