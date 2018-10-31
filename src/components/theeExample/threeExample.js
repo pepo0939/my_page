@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import * as THREE from "three";
+import PLAYER_CONTROL_STATUS from "../../helpers/playerControlStatus";
 
 const styles = {
   container: {
@@ -54,8 +55,10 @@ export default class ThreeExample extends Component {
   };
 
   animate = () => {
-    this.cube.rotation.x += 0.01;
-    this.cube.rotation.y += 0.01;
+    if (this.props.playerStatus === PLAYER_CONTROL_STATUS.PLAYING) {
+      this.cube.rotation.x += 0.01;
+      this.cube.rotation.y += 0.01;
+    }
 
     this.renderScene();
     this.frameId = window.requestAnimationFrame(this.animate);

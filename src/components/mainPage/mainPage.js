@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import NavBar from "../navBar/navBar";
 import Section from "../section/section";
 import Introduction from "../introduction/introduction";
-import Welcome from "../welcome/welcome";
-import ThreeExample from "../theeExample/threeExaple";
+import Welcome from "../welcome";
+import ThreeExample from "../theeExample";
+import PlayerControl from "../playerControl";
 
 const styles = {
   container: {}
@@ -14,10 +15,15 @@ export default class mainPage extends Component {
 
   constructor() {
     super();
-    const sections = [<Welcome />];
+    //const sections = [<Welcome />, <Introduction />, <ThreeExample />];
+    const sections = [
+      { component: <Welcome />, name: "Welcome" },
+      { component: <Introduction />, name: "Introduction" },
+      { component: <ThreeExample />, name: "ThreeJs Example" }
+    ];
     this.state = {
       sections,
-      selectedSection: sections[0].type.name,
+      selectedSection: sections[0].name,
       sectionHeight: 0
     };
   }
@@ -34,7 +40,7 @@ export default class mainPage extends Component {
           window.scrollY >= index * this.state.sectionHeight &&
           window.scrollY <= (index + 1) * this.state.sectionHeight
         )
-          return section.type.name;
+          return section.name;
         return selectedSection;
       },
       ""
@@ -48,7 +54,7 @@ export default class mainPage extends Component {
         key={index}
         setSectionHeight={sectionHeight => this.setState({ sectionHeight })}
       >
-        {section}
+        {section.component}
       </Section>
     );
   };
@@ -67,7 +73,7 @@ export default class mainPage extends Component {
     });
   };
 
-  getSectionName = section => section.type.name;
+  getSectionName = section => section.name;
 
   render() {
     return (
@@ -78,6 +84,7 @@ export default class mainPage extends Component {
           selectedSection={this.state.selectedSection}
           scrollTo={this.scrollTo}
         />
+        <PlayerControl />
       </div>
     );
   }

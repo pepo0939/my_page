@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Splitter from "../splitter/splitter";
 import { TimelineMax } from "gsap/all";
+import PLAYER_CONTROL_STATUS from "../../helpers/playerControlStatus";
 
 const styles = {
   container: {
@@ -49,6 +50,17 @@ export default class Welcome extends Component {
   setDivisionRefs = ({ words, sentences, characters }) =>
     this.setState({ words, sentences, characters });
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.playerStatus === PLAYER_CONTROL_STATUS.PLAYING) {
+      if (state.rejoin === true) {
+        return { rejoin: false };
+      }
+    }
+    if (props.playerStatus === PLAYER_CONTROL_STATUS.STOPED) {
+      return { rejoin: true };
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (
       !this.areEquals(prevState.sentences, this.state.sentences) &&
@@ -56,6 +68,14 @@ export default class Welcome extends Component {
       !this.areEquals(prevState.characters, this.state.characters)
     )
       this.generateTimeline();
+
+    if (this.props.playerStatus === PLAYER_CONTROL_STATUS.PLAYING) {
+      this.timeline.play();
+    }
+
+    if (this.props.playerStatus === PLAYER_CONTROL_STATUS.PAUSED) {
+      this.timeline.pause();
+    }
   }
 
   areEquals = (listA, listB) => {
@@ -106,13 +126,6 @@ export default class Welcome extends Component {
       );
   };
 
-  handlePlayPress = () => {
-    if (this.state.rejoin === true) {
-      this.setState({ rejoin: false });
-    }
-    this.timeline.play();
-  };
-
   render() {
     return (
       <div style={styles.container}>
@@ -125,28 +138,6 @@ export default class Welcome extends Component {
           Hello. I'm a Web Developer... And this page is an example of what I
           can do
         </Splitter>
-
-        <div style={styles.constrolSet}>
-          <img
-            alt={"play"}
-            onClick={this.handlePlayPress}
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFiSURBVGhD7dk9SsRQFMXxqNhoKVaChQsQxd4NuAHFTkQUwTXYibMIrSxFrCzstHMBaicIdjYifiCi/m8RmOKMM3kzyX0M98CvCe/dcEgIgVdEIpHI0GUGq9hysIEl9J11vOHX2QlGkRR7Eu9Qgz1sIyn2OqmBXs6QlB2ogV6ukZQoUpMoEkVq0miRVxzgue3aoDRapLzZLK6g1qRyKWIZwz6+odZW5VakzDIeodZX4V7EMgX7xVB7epVFEcsIdvEBtbebbIqUmcct1P7/ZFfEMoFjqBmdZFnEYq/aPdQcJdsiK/iCmqNkV2QcLfxAzegkqyJzuIHa2002RdbwArWvF+5FJnEEtb4K1yILuINaW5VLEfu07uETal2KRos8YBHnbdcGpdEidYoiUaQmUWRoimxCDfRyiaTYSZEa6MX+mJNjJ0VqaNOeMI3k2HGXnRSdwh5t0y5wiL5KRCKRSKSmFMUfaI+iASkSqzcAAAAASUVORK5CYII="
-          />
-          <img
-            alt={"pause"}
-            onClick={() => {
-              this.timeline.pause();
-            }}
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEpSURBVGhD7dmhS4NBHMbxF4Nl2WQ2mJeM5vkHCIJBhsxiNFiWNZmMNuMwGgSLed1gkeGfoBZRvz+4F37IhXe33R2O5wufcgcnD7O9jVJKrVyb2MdxBUfoY+EO8I6fym6xhqTsl/hA7OEaRkjK/p1iD9Zyh6ROEHuwlickpSGZaIiGZFJ8yCPGeHFn5hNXuMZXOJtH0SGvWIe1BX93jjYb5O+6KDrk7x/zd3t2EFrG251b9pCBHYQ0JCUNcfk7DQk0RENc/k5DAg3REJe/+1dDpmjrwd8dou0M/q6LokO+cYpt3ISz1jN2sItZOJtH0SE5aYiGZKIhKzNkiNiDtTwgKftSFHuwlkskZ1+KYo+W9oYNJGefu+xL0QT205Z2jwssNEIppVSmmuYXw8OmiE7qzHYAAAAASUVORK5CYII="
-          />
-          <img
-            alt={"stop"}
-            onClick={() => {
-              this.setState({ rejoin: true });
-            }}
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACrSURBVGhD7dK9EYFREEbhLyIyfgoQCMjohhJEYqqhIMqgCAQc+b2JvZtwzswT77wz25mZmdl39TBLNEFqAxzxwCvZBUukdELpaJYbRmhaH3eUDmZao2lTlA5lO6BpDglySC2HBDmklkOCHFLLIUEOqeWQIIfUckiQQ2o5JMghtX5myBilQ9m2aN4ZpWNZnligeStcUTra2mfEDmkNscE+0eed5jAzM7M/reveoxVeoBUzn9YAAAAASUVORK5CYII="
-          />
-        </div>
       </div>
     );
   }

@@ -8,7 +8,11 @@ const styles = {
     top: "50%",
     left: "4%",
     transform: "translate(0, -50%)",
-    padding: 0
+    padding: 0,
+    transition: "all 1s"
+  },
+  hidden: {
+    opacity: 0
   },
   li: {
     listStyleType: "none",
@@ -61,6 +65,19 @@ const styles = {
 export default class NavBar extends Component {
   propTypes: { sections: PropTypes.array.isRequired };
 
+  state = {
+    visible: true
+  };
+
+  componentDidMount = () => {
+    this.setVisibleTimeout();
+  };
+
+  setVisibleTimeout = () => {
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.setState({ visible: false }), 2000);
+  };
+
   renderBullet = section => (
     <div
       style={{
@@ -96,7 +113,16 @@ export default class NavBar extends Component {
 
   render() {
     return (
-      <ul style={styles.navBar}>
+      <ul
+        style={{
+          ...styles.navBar,
+          ...(!this.state.visible ? styles.hidden : {})
+        }}
+        onMouseOver={() => {
+          this.setState({ visible: true });
+        }}
+        onMouseLeave={this.setVisibleTimeout}
+      >
         {this.props.sections.map(this.renderSection)}
       </ul>
     );

@@ -7,6 +7,7 @@ TODO:
 */
 
 const divitionsType = {
+  LINE: "LINE",
   SENTENCES: "SENTENCES",
   WORDS: "WORDS",
   CHARACTERS: "CHARACTERS"
@@ -209,6 +210,19 @@ export default class Splitter extends Component {
 
     if (this.props.rejoin)
       return <div style={customeStyles.container}>{this.props.children}</div>;
+
+    if (this.props.splitIn.some(div => div === divitionsType.LINE))
+      return (
+        <RefContext.Provider
+          value={{
+            wordRefs: this.wordRefs
+          }}
+        >
+          <StyleContext.Provider value={customeStyles}>
+            {renderedDivition([divitionsType.WORDS], children)}
+          </StyleContext.Provider>
+        </RefContext.Provider>
+      );
 
     return (
       <RefContext.Provider

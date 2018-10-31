@@ -3,8 +3,7 @@ import React, { Component } from "react";
 const style = {
   container: {
     width: "100vw",
-    height: "100vh",
-    borderBottom: "2px solid black" //TODO: this has to be eliminated
+    height: "100vh"
   }
 };
 
