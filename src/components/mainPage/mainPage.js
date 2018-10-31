@@ -62,7 +62,7 @@ export default class mainPage extends Component {
   scrollTo = goToSection => {
     //this.setState({ selectedSection: goToSection });
     this.state.sections.find((section, index) => {
-      if (goToSection === section.type.name) {
+      if (goToSection === section.name) {
         window.scrollTo({
           top: index * this.state.sectionHeight,
           behavior: "smooth"
