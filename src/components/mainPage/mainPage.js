@@ -5,6 +5,7 @@ import Introduction from "../introduction/introduction";
 import Welcome from "../welcome";
 import ThreeExample from "../theeExample";
 import PlayerControl from "../playerControl";
+import ContactList from "../contactList/contactList";
 
 const styles = {
   container: {}
@@ -19,7 +20,8 @@ export default class mainPage extends Component {
     const sections = [
       { component: <Welcome />, name: "Welcome" },
       { component: <Introduction />, name: "Introduction" },
-      { component: <ThreeExample />, name: "ThreeJs Example" }
+      { component: <ThreeExample />, name: "ThreeJs Example" },
+      { component: <ContactList />, name: "Contacts" }
     ];
     this.state = {
       sections,
