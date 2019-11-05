@@ -21,7 +21,13 @@ export default class Section extends Component {
 
   render() {
     return (
-      <div ref={ref => (this.sectionRef = ref)} style={style.container}>
+      <div
+        ref={ref => (this.sectionRef = ref)}
+        style={{
+          ...style.container,
+          backgroundColor: this.props.backgroundColor
+        }}
+      >
         {this.props.children}
       </div>
     );

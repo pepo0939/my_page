@@ -20,7 +20,7 @@ export default class ThreeExample extends Component {
     this.camera.position.z = 4;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.renderer.setClearColor("#f2f2f2");
+    this.renderer.setClearColor("#ffffff");
     this.renderer.setSize(width, height);
     this.container.appendChild(this.renderer.domElement);
 

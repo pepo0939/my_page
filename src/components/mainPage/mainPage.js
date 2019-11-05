@@ -55,6 +55,7 @@ export default class mainPage extends Component {
       <Section
         key={index}
         setSectionHeight={sectionHeight => this.setState({ sectionHeight })}
+        backgroundColor={index % 2 > 0 ? "#f2f2f2" : "#ffffff"}
       >
         {section.component}
       </Section>
