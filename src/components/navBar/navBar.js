@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 
 const styles = {
   navBar: {
@@ -62,27 +61,24 @@ const styles = {
   }
 };
 
-export default class NavBar extends Component {
-  propTypes: { sections: PropTypes.array.isRequired };
+let timeout;
+const NavBar = props => {
+  const [visible, setVisible] = useState(true);
 
-  state = {
-    visible: true
+  useEffect(() => {
+    setVisibleTimeout();
+  }, []);
+
+  const setVisibleTimeout = () => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => setVisible(false), 2000);
   };
 
-  componentDidMount = () => {
-    this.setVisibleTimeout();
-  };
-
-  setVisibleTimeout = () => {
-    if (this.timeout) clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.setState({ visible: false }), 2000);
-  };
-
-  renderBullet = section => (
+  const renderBullet = section => (
     <div
       style={{
         ...styles.bulletBorder,
-        ...(this.props.selectedSection === section
+        ...(props.selectedSection === section
           ? styles.selectedBulletBorder
           : {})
       }}
@@ -90,41 +86,35 @@ export default class NavBar extends Component {
       <div
         style={{
           ...styles.bullet,
-          ...(this.props.selectedSection === section
-            ? styles.selectedBullet
-            : {})
+          ...(props.selectedSection === section ? styles.selectedBullet : {})
         }}
       />
     </div>
   );
 
-  renderSection = (section, index) => {
+  const renderSection = (section, index) => {
     return (
-      <li
-        style={styles.li}
-        key={index}
-        onClick={() => this.props.scrollTo(section)}
-      >
-        {this.renderBullet(section)}
+      <li style={styles.li} key={index} onClick={() => props.scrollTo(section)}>
+        {renderBullet(section)}
         <span value={section}>{section}</span>
       </li>
     );
   };
 
-  render() {
-    return (
-      <ul
-        style={{
-          ...styles.navBar,
-          ...(!this.state.visible ? styles.hidden : {})
-        }}
-        onMouseOver={() => {
-          this.setState({ visible: true });
-        }}
-        onMouseLeave={this.setVisibleTimeout}
-      >
-        {this.props.sections.map(this.renderSection)}
-      </ul>
-    );
-  }
-}
+  return (
+    <ul
+      style={{
+        ...styles.navBar,
+        ...(!visible ? styles.hidden : {})
+      }}
+      onMouseOver={() => {
+        setVisible(true);
+      }}
+      onMouseLeave={setVisibleTimeout}
+    >
+      {props.sections.map(renderSection)}
+    </ul>
+  );
+};
+
+export default NavBar;
