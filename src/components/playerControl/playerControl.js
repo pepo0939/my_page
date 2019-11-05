@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import PLAYER_CONTROL_STATUS from "../../helpers/playerControlStatus";
 
 const styles = {
   container: {
@@ -13,6 +14,9 @@ const styles = {
   },
   hidden: {
     opacity: 0
+  },
+  button: {
+    height: 50
   }
 };
 
@@ -57,21 +61,40 @@ export default class PlayerControl extends PureComponent {
             ...(!this.state.visible ? styles.hidden : {})
           }}
         >
-          <img
-            alt={"play"}
-            onClick={this.handlePlayPress}
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFiSURBVGhD7dk9SsRQFMXxqNhoKVaChQsQxd4NuAHFTkQUwTXYibMIrSxFrCzstHMBaicIdjYifiCi/m8RmOKMM3kzyX0M98CvCe/dcEgIgVdEIpHI0GUGq9hysIEl9J11vOHX2QlGkRR7Eu9Qgz1sIyn2OqmBXs6QlB2ogV6ukZQoUpMoEkVq0miRVxzgue3aoDRapLzZLK6g1qRyKWIZwz6+odZW5VakzDIeodZX4V7EMgX7xVB7epVFEcsIdvEBtbebbIqUmcct1P7/ZFfEMoFjqBmdZFnEYq/aPdQcJdsiK/iCmqNkV2QcLfxAzegkqyJzuIHa2002RdbwArWvF+5FJnEEtb4K1yILuINaW5VLEfu07uETal2KRos8YBHnbdcGpdEidYoiUaQmUWRoimxCDfRyiaTYSZEa6MX+mJNjJ0VqaNOeMI3k2HGXnRSdwh5t0y5wiL5KRCKRSKSmFMUfaI+iASkSqzcAAAAASUVORK5CYII="
-          />
-          <img
-            alt={"pause"}
-            onClick={this.handlePausePress}
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEpSURBVGhD7dmhS4NBHMbxF4Nl2WQ2mJeM5vkHCIJBhsxiNFiWNZmMNuMwGgSLed1gkeGfoBZRvz+4F37IhXe33R2O5wufcgcnD7O9jVJKrVyb2MdxBUfoY+EO8I6fym6xhqTsl/hA7OEaRkjK/p1iD9Zyh6ROEHuwlickpSGZaIiGZFJ8yCPGeHFn5hNXuMZXOJtH0SGvWIe1BX93jjYb5O+6KDrk7x/zd3t2EFrG251b9pCBHYQ0JCUNcfk7DQk0RENc/k5DAg3REJe/+1dDpmjrwd8dou0M/q6LokO+cYpt3ISz1jN2sItZOJtH0SE5aYiGZKIhKzNkiNiDtTwgKftSFHuwlkskZ1+KYo+W9oYNJGefu+xL0QT205Z2jwssNEIppVSmmuYXw8OmiE7qzHYAAAAASUVORK5CYII="
-          />
-          <img
+          {this.props.playerStatus !== PLAYER_CONTROL_STATUS.PLAYING ? (
+            <svg
+              alt={"play"}
+              onClick={this.handlePlayPress}
+              style={styles.button}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 30 30"
+            >
+              {" "}
+              <path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M20.304,15.402l-7.608,4.392 C12.313,20.015,12,19.834,12,19.392v-8.785c0-0.442,0.313-0.623,0.696-0.402l7.608,4.392C20.687,14.819,20.687,15.181,20.304,15.402 z" />
+            </svg>
+          ) : (
+            <svg
+              alt={"pause"}
+              onClick={this.handlePausePress}
+              style={styles.button}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 30 30"
+            >
+              {" "}
+              <path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M14,19c0,0.552-0.448,1-1,1 s-1-0.448-1-1v-8c0-0.552,0.448-1,1-1s1,0.448,1,1V19z M18,19c0,0.552-0.448,1-1,1s-1-0.448-1-1v-8c0-0.552,0.448-1,1-1s1,0.448,1,1 V19z" />
+            </svg>
+          )}
+
+          <svg
             alt={"stop"}
             onClick={this.handleStopPress}
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACrSURBVGhD7dK9EYFREEbhLyIyfgoQCMjohhJEYqqhIMqgCAQc+b2JvZtwzswT77wz25mZmdl39TBLNEFqAxzxwCvZBUukdELpaJYbRmhaH3eUDmZao2lTlA5lO6BpDglySC2HBDmklkOCHFLLIUEOqeWQIIfUckiQQ2o5JMghtX5myBilQ9m2aN4ZpWNZnligeStcUTra2mfEDmkNscE+0eed5jAzM7M/reveoxVeoBUzn9YAAAAASUVORK5CYII="
-          />
+            style={styles.button}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 30 30"
+          >
+            {" "}
+            <path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M20,19c0,0.552-0.448,1-1,1h-8 c-0.552,0-1-0.448-1-1v-8c0-0.552,0.448-1,1-1h8c0.552,0,1,0.448,1,1V19z" />
+          </svg>
         </div>
       </div>
     );

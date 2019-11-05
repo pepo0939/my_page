@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import Splitter from "../splitter/splitter";
+import Splitter from "../splitter/splitter-hooks";
+//import Splitter from "react-text-splitter";
 import { TimelineMax } from "gsap/all";
 import PLAYER_CONTROL_STATUS from "../../helpers/playerControlStatus";
 
@@ -59,6 +60,7 @@ export default class Welcome extends Component {
     if (props.playerStatus === PLAYER_CONTROL_STATUS.STOPED) {
       return { rejoin: true };
     }
+    return null;
   }
 
   componentDidUpdate(prevProps, prevState) {

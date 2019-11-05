@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 
 /*
 TODO:
@@ -37,19 +37,15 @@ const RefContext = React.createContext({
   charRefs: () => {}
 });
 
-const Character = ({ children: char, id }) => (
-  <RefContext.Consumer>
-    {({ charRefs }) => (
-      <StyleContext.Consumer>
-        {({ character: charStyle }) => (
-          <div ref={charRefs} style={charStyle} id={id}>
-            {char}
-          </div>
-        )}
-      </StyleContext.Consumer>
-    )}
-  </RefContext.Consumer>
-);
+const Character = ({ children: char, id }) => {
+  let { charRefs } = useContext(RefContext);
+  let { character: charStyle } = useContext(StyleContext);
+  return (
+    <div ref={charRefs} style={charStyle} id={id}>
+      {char}
+    </div>
+  );
+};
 const renderCharacters = (splitIn, text, id = "") =>
   text.split("").map((char, index) => (
     <Character key={`${id}c${index}`} id={`${id}c${index}`}>
@@ -57,25 +53,21 @@ const renderCharacters = (splitIn, text, id = "") =>
     </Character>
   ));
 
-const Word = ({ children: word, id, splitIn }) => (
-  <RefContext.Consumer>
-    {({ wordRefs }) => (
-      <StyleContext.Consumer>
-        {({ word: wordsStyle = {} }) => (
-          <>
-            <div ref={wordRefs} style={wordsStyle} id={id}>
-              {renderedDivition(
-                splitIn.filter(div => div !== divitionsType.WORDS),
-                word,
-                id
-              )}
-            </div>{" "}
-          </>
+const Word = ({ children: word, id, splitIn }) => {
+  let { wordRefs } = useContext(RefContext);
+  let { word: wordsStyle } = useContext(StyleContext);
+  return (
+    <>
+      <div ref={wordRefs} style={wordsStyle} id={id}>
+        {renderedDivition(
+          splitIn.filter(div => div !== divitionsType.WORDS),
+          word,
+          id
         )}
-      </StyleContext.Consumer>
-    )}
-  </RefContext.Consumer>
-);
+      </div>{" "}
+    </>
+  );
+};
 
 const renderWords = (splitIn, text, id = "") =>
   text
@@ -87,25 +79,21 @@ const renderWords = (splitIn, text, id = "") =>
       </Word>
     ));
 
-const Sentence = ({ children: sentence, id, splitIn }) => (
-  <RefContext.Consumer>
-    {({ sentenceRefs }) => (
-      <StyleContext.Consumer>
-        {({ sentence: sentStyle }) => (
-          <>
-            <div ref={sentenceRefs} style={sentStyle} id={id}>
-              {renderedDivition(
-                splitIn.filter(div => div !== divitionsType.SENTENCES),
-                sentence,
-                id
-              )}
-            </div>{" "}
-          </>
+const Sentence = ({ children: sentence, id, splitIn }) => {
+  let { sentenceRefs } = useContext(RefContext);
+  let { sentence: sentStyle } = useContext(StyleContext);
+  return (
+    <>
+      <div ref={sentenceRefs} style={sentStyle} id={id}>
+        {renderedDivition(
+          splitIn.filter(div => div !== divitionsType.SENTENCES),
+          sentence,
+          id
         )}
-      </StyleContext.Consumer>
-    )}
-  </RefContext.Consumer>
-);
+      </div>{" "}
+    </>
+  );
+};
 
 const renderSentences = (splitIn, sentences) =>
   sentences.split(". ").map((sentence, index) => (
