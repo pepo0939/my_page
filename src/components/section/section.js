@@ -11,18 +11,23 @@ export default class Section extends Component {
   sectionRef = React.createRef();
 
   componentDidMount = () => {
-    const setHeight = () => {
-      if (this.sectionRef && this.sectionRef.clientHeight)
-        this.props.setSectionHeight(this.sectionRef.clientHeight);
-    };
-    window.addEventListener("resize", setHeight);
-    setHeight();
+    window.addEventListener("resize", this.setHeight);
+    this.setHeight();
+  };
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.setHeight);
+  }
+
+  setHeight = () => {
+    if (this.sectionRef && this.sectionRef.current.clientHeight)
+      this.props.setSectionHeight(this.sectionRef.current.clientHeight);
   };
 
   render() {
     return (
       <div
-        ref={ref => (this.sectionRef = ref)}
+        ref={this.sectionRef}
         style={{
           ...style.container,
           backgroundColor: this.props.backgroundColor

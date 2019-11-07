@@ -11,9 +11,15 @@ const styles = {
 };
 
 export default class ThreeExample extends Component {
+  constructor(props) {
+    super(props);
+    this.rotation = [0.1, 0.1];
+    this.container = React.createRef();
+  }
+
   componentDidMount() {
-    const width = this.container.clientWidth;
-    const height = this.container.clientHeight;
+    const width = this.container.current.clientWidth;
+    const height = this.container.current.clientHeight;
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
@@ -22,7 +28,7 @@ export default class ThreeExample extends Component {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setClearColor("#ffffff");
     this.renderer.setSize(width, height);
-    this.container.appendChild(this.renderer.domElement);
+    this.container.current.appendChild(this.renderer.domElement);
 
     this.light = new THREE.AmbientLight(0x404040, 0.5);
     this.scene.add(this.light);
@@ -37,11 +43,22 @@ export default class ThreeExample extends Component {
     this.scene.add(this.cube);
 
     this.start();
+
+    window.addEventListener("resize", this.updateSize);
   }
+
+  updateSize = () => {
+    const width = this.container.current.clientWidth;
+    const height = this.container.current.clientHeight;
+    this.renderer.setSize(width, height);
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+  };
 
   componentWillUnmount() {
     this.stop();
-    this.container.removeChild(this.renderer.domElement);
+    this.container.current.removeChild(this.renderer.domElement);
+    window.removeEventListener("resize", this.updateSize);
   }
 
   start = () => {
@@ -68,13 +85,20 @@ export default class ThreeExample extends Component {
     this.renderer.render(this.scene, this.camera);
   };
 
+  clickHandler = event => {
+    const width = this.container.current.clientWidth;
+    const asd = 0xffffff / width;
+    const val = event.clientX * asd;
+    // console.log(event.clientX, asd, val, "#" + parseInt(val).toString(16));
+    this.cube.material.color.setHex("0x" + parseInt(val).toString(16));
+  };
+
   render() {
     return (
       <div
+        onClick={this.clickHandler}
         style={styles.container}
-        ref={ref => {
-          this.container = ref;
-        }}
+        ref={this.container}
       />
     );
   }
