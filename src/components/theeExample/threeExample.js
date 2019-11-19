@@ -10,6 +10,15 @@ const styles = {
   }
 };
 
+const RED = 2,
+  BLUE = 4,
+  GREEN = 0;
+
+const returnHex = value => {
+  const rtn = parseInt(value, 0).toString(16);
+  return rtn.length === 1 ? "0" + rtn : rtn;
+};
+
 export default class ThreeExample extends Component {
   constructor(props) {
     super(props);
@@ -85,18 +94,55 @@ export default class ThreeExample extends Component {
     this.renderer.render(this.scene, this.camera);
   };
 
-  clickHandler = event => {
+  mouseDownHandler = event => {
+    event.target.addEventListener("mousemove", this.changeCubeColor);
+  };
+
+  mouseUpHandler = event => {
+    event.target.removeEventListener("mousemove", this.changeCubeColor);
+  };
+
+  changeCubeColor = event => {
     const width = this.container.current.clientWidth;
-    const asd = 0xffffff / width;
-    const val = event.clientX * asd;
-    // console.log(event.clientX, asd, val, "#" + parseInt(val).toString(16));
-    this.cube.material.color.setHex("0x" + parseInt(val).toString(16));
+    const colorFunc = this.getColorFunction(width, event.clientX);
+    const color = `#${colorFunc(RED)}${colorFunc(GREEN)}${colorFunc(BLUE)}`;
+
+    this.cube.material.color.set(color);
+  };
+
+  getColorFunction = (width, position) => {
+    const part = width / 6;
+
+    const section = [...Array(6).keys()].find(
+      pos => part * pos <= position && position < part * (pos + 1)
+    );
+
+    return (color = 0) => {
+      let colorSection = section + color;
+
+      if (colorSection >= 6) colorSection = colorSection - 6;
+
+      const hexFromPosition = (position - part * section) * (0xff / part);
+
+      switch (colorSection) {
+        case 0:
+          return returnHex(hexFromPosition);
+        case 1:
+        case 2:
+          return "ff";
+        case 3:
+          return returnHex(0xff - hexFromPosition);
+        default:
+          return "00";
+      }
+    };
   };
 
   render() {
     return (
       <div
-        onClick={this.clickHandler}
+        onMouseDown={this.mouseDownHandler}
+        onMouseUp={this.mouseUpHandler}
         style={styles.container}
         ref={this.container}
       />
