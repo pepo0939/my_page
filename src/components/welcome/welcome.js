@@ -107,7 +107,7 @@ export default class Welcome extends Component {
         });
     if (this.state.words)
       this.timeline.staggerFrom(
-        this.state.words.filter(w => w.id.includes("s2")),
+        this.state.words.filter((w) => w.id.includes("s2")),
         1,
         {
           opacity: 0,
@@ -118,7 +118,7 @@ export default class Welcome extends Component {
       );
     if (this.state.characters)
       this.timeline.staggerTo(
-        this.state.characters.filter(c => c.id.includes("s2")),
+        this.state.characters.filter((c) => c.id.includes("s2")),
         0.5,
         {
           opacity: 0,

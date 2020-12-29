@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import "./navBar.css";
 
 const styles = {
   navBar: {
@@ -12,109 +13,44 @@ const styles = {
   },
   hidden: {
     opacity: 0
-  },
-  li: {
-    listStyleType: "none",
-    display: "flex",
-    cursor: "pointer",
-    alignItems: "center",
-    alignContent: "center",
-    paddingBottom: 8
-  },
-  bulletContainer: {
-    height: 20,
-    width: 20,
-    marginTop: -4,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  bullet: {
-    position: "absolute",
-    height: 12,
-    width: 12,
-    backgroundColor: "green",
-    borderRadius: 50,
-    transition: "all 1s"
-  },
-  selectedBullet: {
-    height: 9,
-    width: 9,
-    backgroundColor: "red"
-  },
-  bulletBorder: {
-    margin: "2px 4px 4px 4px",
-    border: "2px solid green",
-    height: 10,
-    width: 10,
-    borderRadius: 50,
-    transition: "all 1s",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    transform: "translate(-50%, 0)"
-  },
-  selectedBulletBorder: {
-    height: 14,
-    width: 14,
-    border: "2px solid red"
   }
 };
 
-let timeout;
 const NavBar = props => {
-  const [visible, setVisible] = useState(true);
-
-  useEffect(() => {
-    setVisibleTimeout();
-  }, []);
-
-  const setVisibleTimeout = () => {
-    if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(() => setVisible(false), 2000);
-  };
-
-  const renderBullet = section => (
-    <div
-      style={{
-        ...styles.bulletBorder,
-        ...(props.selectedSection === section
-          ? styles.selectedBulletBorder
-          : {})
-      }}
+  const renderBulletWithSVG = section => (
+    <svg
+      className={`bullet${
+        props.selectedSection === section ? " selected" : ""
+      }`}
+      viewBox="0 0 100 100"
     >
-      <div
-        style={{
-          ...styles.bullet,
-          ...(props.selectedSection === section ? styles.selectedBullet : {})
-        }}
+      <circle
+        className="border"
+        cx="50"
+        cy="50"
+        r="40"
+        stroke="red"
+        strokeWidth="10"
+        fillOpacity="0"
       />
-    </div>
+      <circle className="inner-circule" cx="50" cy="50" r="20" fill="red" />
+    </svg>
   );
 
   const renderSection = (section, index) => {
     return (
-      <li style={styles.li} key={index} onClick={() => props.scrollTo(section)}>
-        {renderBullet(section)}
+      <li
+        className="section-name"
+        key={index}
+        onClick={() => props.scrollTo(section)}
+      >
+        {renderBulletWithSVG(section)}
         <span value={section}>{section}</span>
       </li>
     );
   };
 
-  return (
-    <ul
-      style={{
-        ...styles.navBar,
-        ...(!visible ? styles.hidden : {})
-      }}
-      onMouseOver={() => {
-        setVisible(true);
-      }}
-      onMouseLeave={setVisibleTimeout}
-    >
-      {props.sections.map(renderSection)}
-    </ul>
-  );
+  return <ul className="navbar">{props.sections.map(renderSection)}</ul>;
 };
 
 export default NavBar;

@@ -14,7 +14,7 @@ const RED = 2,
   BLUE = 4,
   GREEN = 0;
 
-const returnHex = value => {
+const returnHex = (value) => {
   const rtn = parseInt(value, 0).toString(16);
   return rtn.length === 1 ? "0" + rtn : rtn;
 };
@@ -94,18 +94,19 @@ export default class ThreeExample extends Component {
     this.renderer.render(this.scene, this.camera);
   };
 
-  mouseDownHandler = event => {
+  mouseDownHandler = (event) => {
     event.target.addEventListener("mousemove", this.changeCubeColor);
   };
 
-  mouseUpHandler = event => {
+  mouseUpHandler = (event) => {
     event.target.removeEventListener("mousemove", this.changeCubeColor);
   };
 
-  changeCubeColor = event => {
+  changeCubeColor = (event) => {
     const width = this.container.current.clientWidth;
     const colorFunc = this.getColorFunction(width, event.clientX);
-    const color = `#${colorFunc(RED)}${colorFunc(GREEN)}${colorFunc(BLUE)}`;
+    const color = `#${colorFunc(RED)}0000`;
+    console.log(width, event.clientX, `#${colorFunc(RED)}0000`);
 
     this.cube.material.color.set(color);
   };
@@ -114,7 +115,7 @@ export default class ThreeExample extends Component {
     const part = width / 6;
 
     const section = [...Array(6).keys()].find(
-      pos => part * pos <= position && position < part * (pos + 1)
+      (pos) => part * pos <= position && position < part * (pos + 1)
     );
 
     return (color = 0) => {

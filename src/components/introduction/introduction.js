@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 const styles = {
   container: {
@@ -12,19 +12,16 @@ const styles = {
   }
 };
 
-export default class Introduction extends Component {
-  displayName = "Introduction";
-  render() {
-    return (
-      <div style={styles.container}>
-        <p>About</p>
-        <p>
-          I'm Franco Luciano Rossi an Program Engineer, Web Developer, Gamer and
-          Martial Art Teacher. This page was created to present myself and
-          showcase my abilities as a Web Developer. This page will contain
-          diferent sections with examples and test. Enjoy...
-        </p>
-      </div>
-    );
-  }
-}
+export default () => {
+  return (
+    <div style={styles.container}>
+      <p>About</p>
+      <p>
+        I'm Franco Luciano Rossi an Program Engineer, Web Developer, Gamer and
+        Martial Art Teacher. This page was created to present myself and
+        showcase my abilities as a Web Developer. This page will contain
+        diferent sections with examples and test. Enjoy...
+      </p>
+    </div>
+  );
+};

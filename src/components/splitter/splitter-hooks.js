@@ -102,14 +102,6 @@ const renderSentences = (splitIn, sentences) =>
     </Sentence>
   ));
 
-/*const renderSentences = (splitIn, sentences) =>
-  sentences.map((sentence, index) => (
-    <Sentence key={index} id={`s${index}`} splitIn={splitIn}>
-      {sentence}
-    </Sentence>
-  ));
-  */
-
 const renderedDivition = (splitIn, children, id) => {
   const arrayStringChildren = React.Children.map(children, child => {
     return !child.type ? child : child.props.children;
@@ -182,9 +174,9 @@ export default class Splitter extends Component {
   render() {
     let {
       styles: customeStyles,
-      splitIn = [divitionsType.SENTENCE],
-      children
+      splitIn = [divitionsType.SENTENCE]
     } = this.props;
+    const { children } = this.props;
     customeStyles = Object.keys(styles).reduce(
       (obj, key) => ({
         ...obj,

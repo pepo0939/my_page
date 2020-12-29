@@ -1,0 +1,57 @@
+.navbar {
+  position: fixed;
+  margin: 0;
+  top: 50%;
+  left: 4%;
+  transform: translate(0, -50%);
+  padding: 0;
+  transition: all 2s ease;
+  opacity: 0;
+}
+
+.navbar li {
+  list-style-type: none;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  align-content: center;
+  padding-bottom: 8;
+}
+
+.navbar:hover {
+  opacity: 1;
+  transition: all 2s ease;
+}
+
+li {
+  list-style-type: none;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  align-content: center;
+  padding-bottom: 8;
+}
+
+.bullet {
+  height: 20px;
+  width: 20px;
+  padding-right: 2px;
+  margin-top: -1px;
+}
+
+.inner-circule {
+  transition: all 1s;
+}
+
+.selected .inner-circule,
+.border {
+  r: 40;
+  fill: black;
+  stroke: black;
+  transition: all 2s;
+}
+
+.section-name:hover .inner-circule {
+  r: 40;
+  transition: all 1s;
+}

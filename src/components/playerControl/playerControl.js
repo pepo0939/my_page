@@ -20,7 +20,7 @@ const styles = {
   }
 };
 let timeout;
-function PlayerControl(props) {
+const PlayerControl = ({ play, pause, stop, playerStatus }) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -33,15 +33,15 @@ function PlayerControl(props) {
   };
 
   const handlePlayPress = () => {
-    props.play();
+    play();
   };
 
   const handlePausePress = () => {
-    props.pause();
+    pause();
   };
 
   const handleStopPress = () => {
-    props.stop();
+    stop();
   };
 
   return (
@@ -58,7 +58,7 @@ function PlayerControl(props) {
           ...(!visible ? styles.hidden : {})
         }}
       >
-        {props.playerStatus !== PLAYER_CONTROL_STATUS.PLAYING ? (
+        {playerStatus !== PLAYER_CONTROL_STATUS.PLAYING ? (
           <svg
             alt={"play"}
             onClick={handlePlayPress}
@@ -95,6 +95,6 @@ function PlayerControl(props) {
       </div>
     </div>
   );
-}
+};
 
 export default PlayerControl;
