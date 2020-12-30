@@ -1,23 +1,8 @@
 import React from "react";
 import "./navBar.css";
 
-const styles = {
-  navBar: {
-    position: "fixed",
-    margin: 0,
-    top: "50%",
-    left: "4%",
-    transform: "translate(0, -50%)",
-    padding: 0,
-    transition: "all 1s"
-  },
-  hidden: {
-    opacity: 0
-  }
-};
-
-const NavBar = props => {
-  const renderBulletWithSVG = section => (
+const NavBar = (props) => {
+  const renderBulletWithSVG = (section) => (
     <svg
       className={`bullet${
         props.selectedSection === section ? " selected" : ""

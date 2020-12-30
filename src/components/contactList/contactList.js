@@ -1,18 +1,9 @@
 import React from "react";
-
-const styles = {
-  container: {
-    height: "100vh",
-    display: "flex"
-  },
-  p: {
-    margin: "auto"
-  }
-};
+import "./style.css";
 
 export default () => (
-  <div style={styles.container}>
-    <p style={styles.p}>
+  <div className="container">
+    <p>
       You can contact me on{" "}
       <a href={"https://www.linkedin.com/in/rossifranco/"}>LinkedIn</a>
       <br />

@@ -1,27 +1,16 @@
 import React from "react";
-
-const styles = {
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-    flexDirection: "column",
-    paddingLeft: "30vw",
-    paddingRight: "30vw"
-  }
-};
+import "./style.css";
 
 export default () => {
   return (
-    <div style={styles.container}>
-      <p>About</p>
-      <p>
+    <div className="intro-container">
+      <div className="about">About</div>
+      <div>
         I'm Franco Luciano Rossi an Program Engineer, Web Developer, Gamer and
         Martial Art Teacher. This page was created to present myself and
         showcase my abilities as a Web Developer. This page will contain
         diferent sections with examples and test. Enjoy...
-      </p>
+      </div>
     </div>
   );
 };

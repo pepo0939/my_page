@@ -1,0 +1,15 @@
+.intro-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-left: 30vw;
+  padding-right: 30vw;
+  text-align: center;
+}
+
+.about {
+  padding-top: -8vh;
+  padding-bottom: 8vh;
+}
